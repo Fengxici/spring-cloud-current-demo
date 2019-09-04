@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: config-client
+  rabbitmq:
+      host: 127.0.0.1
+      port: 5672
+      username: guest
+      password: guest
+  cloud:
+    bus:
+      trace:
+        enabled: true
+      enabled: true
+server:
+  port: 8000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

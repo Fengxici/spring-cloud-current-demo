@@ -1,0 +1,89 @@
+# 安全认证的配置
+#spring:
+#  security:
+#    user:
+#      name: root
+#      password: root
+#eureka:
+#  client:
+#        #默认情况下，应用会向注册中心（也是它自己）注册它自己，设置为false表示禁止这种默认行为
+#    register-withEureka: false
+#        #表示不去检索其他的Eureka Server获取注册信息，因为服务注册中心本身的职责就是维护服务实例，它也不需要去检索其他服务
+#    fetch-registry: false
+#    service-url:
+##        对外暴露的地址
+#      defaultZone: http://root:root@localhost:8080/eureka/
+
+# ============================以上为单机部署配置========================================
+
+#=============================以下为集群部署配置========================================
+
+spring:
+  application:
+    name: eureka-server
+# 安全认证的配置
+  security:
+    user:
+      name: root
+      password: root
+  profiles:
+    active: peer1
+
+---
+server:
+  port: 8000
+spring:
+  profiles: peer1
+eureka:
+  instance:
+    hostname: peer1
+    prefer-ip-address: true
+    instance-id: ${eureka.instance.hostname}:${server.port}
+  client:
+        #默认情况下，应用会向注册中心（也是它自己）注册它自己，设置为false表示禁止这种默认行为
+    register-withEureka: false
+        #表示不去检索其他的Eureka Server获取注册信息，因为服务注册中心本身的职责就是维护服务实例，它也不需要去检索其他服务
+    fetch-registry: false
+    service-url:
+        #对外暴露的地址
+      defaultZone: http://root:root@localhost:8001/eureka/,http://root:root@hosthost:8002/eureka/
+
+
+---
+server:
+  port: 8001
+spring:
+  profiles: peer2
+   # 安全认证的配置
+eureka:
+  instance:
+    hostname: peer2
+    prefer-ip-address: true
+    instance-id: ${eureka.instance.hostname}:${server.port}
+  client:
+        #默认情况下，应用会向注册中心（也是它自己）注册它自己，设置为false表示禁止这种默认行为
+    register-withEureka: false
+        #表示不去检索其他的Eureka Server获取注册信息，因为服务注册中心本身的职责就是维护服务实例，它也不需要去检索其他服务
+    fetch-registry: false
+    service-url:
+        #对外暴露的地址
+      defaultZone: http://root:root@localhost:8000/eureka/,http://root:root@localhost:8002/eureka/
+
+---
+server:
+  port: 8002
+spring:
+  profiles: peer3
+eureka:
+  instance:
+    hostname: peer3
+    prefer-ip-address: true
+    instance-id: ${eureka.instance.hostname}:${server.port}
+  client:
+        #默认情况下，应用会向注册中心（也是它自己）注册它自己，设置为false表示禁止这种默认行为
+    register-withEureka: false
+#        表示不去检索其他的Eureka Server获取注册信息，因为服务注册中心本身的职责就是维护服务实例，它也不需要去检索其他服务
+    fetch-registry: false
+    service-url:
+        #对外暴露的地址
+      defaultZone: http://root:root@localhost:8000/eureka/,http://root:root@localhost:8001/eureka/

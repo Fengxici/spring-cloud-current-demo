@@ -1,0 +1,44 @@
+#公共部分
+spring:
+  application:
+    name: spring-boot-demo
+#指定使用哪一个配置
+  profiles:
+    active: prod
+
+# 开发环境 使用8080端口，打开actuator全部端点和shutdown端点
+---
+server:
+  port: 8080
+spring:
+  profiles: dev
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+
+#测试环境 使用8081端口，打开actuator全部端点和shutdown端点
+---
+server:
+  port: 8081
+spring:
+  profiles: test
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+
+#生产环境 使用8082端口，使用actuator默认端点
+---
+server:
+  port: 8082
+spring:
+  profiles: pro

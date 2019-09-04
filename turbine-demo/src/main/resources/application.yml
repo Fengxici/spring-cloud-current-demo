@@ -1,0 +1,22 @@
+server:
+  port: 9080
+spring:
+  application:
+    name: turbine-dashboard
+
+
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+    instance-id: ${eureka.instance.hostname}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://root:root@localhost:8080/eureka
+
+turbine:
+  appConfig: hystrix-dashboard-service
+  aggregator:
+    clusterConfig: default
+  clusterNameExpression: new String("default")
+  instanceUrlSuffix: /hystrix.stream
